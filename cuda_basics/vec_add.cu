@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cuda_runtime.h>
+
 
 // Define a global kernel function that adds two vectors
 __global__ void vectorAdd(const float* A, const float* B, float* C, int N) {
@@ -20,6 +22,13 @@ int main() {
     h_A = (float*)malloc(size);
     h_B = (float*)malloc(size);
     h_C = (float*)malloc(size);
+
+    // Check if memory allocation was successful
+    if(!h_A || !h_B || !h_C) {
+        std::cerr << "Memory allocation failed" << std::endl;
+        return 1;
+    }
+
     // Initialize host arrays
     for(int i = 0; i < N; i++) {
         h_A[i] = 1.0f;
